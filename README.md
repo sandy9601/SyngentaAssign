@@ -1,98 +1,29 @@
-# school-management
-
-### Project Requirements
-
-- Create a login screen.
-
-- After logging in the student list will appear with filters(name, subject) and
-add/edit/view/delete
-
-- While adding a student with the student and subject combination that
-already exists in the database then include the marks in existing marks.
-otherwise, it will create a new student record.
-
-- Student data will appear separately as per the logged-in user
-
-
-## APPROACH 
-
-### MODELS
-
-- TEACHER MODEL
-```yaml
-{ 
-    name: { type: String, trim: true },
-    email: { type: String, trim: true,unique:true,lowercase:true,required:true },
-    password: { type: String,required:true,min:6,max:18 },
-    isDeleted:{type:Boolean,default:false}
-    { timestamps: true }
-}
-```
-
-- STUDENT MODEL
-```yaml
-{ 
-     name:{ type: String, trim: true,lowercase:true },
-     subject:{
-      Maths:  { type: Number, trim: true,lowercase:true,default:0},
-      Physics:  { type: Number, trim: true,lowercase:true,default:0 },
-      Chemistry:  { type: Number, trim: true,lowercase:true,default:0 }
-     },
-      isDeleted:{type:Boolean,default:false},
-      teacherId:{type:ObjectId,required:true}
-
-      { timestamps: true });
-}
-```
-
-### POST /register/teacher 
-- FOR REGISTERING USER WITH EMAIL AND PASSWORD 
-- Encrypted the password using Bcrypt
-
-
-
-### POST /login/teacher
-- LOGIN USER WITH EMAIL AND PASSWORD
-- On successful Login generated JWT  token with expiry time
-
-
-
-### POST /:teacherId/studentDetails/create
-- FOR REGISTERING STUDENT 
-- provided key that has reference to Teacher id to get data according to login teacher 
-
-
-
-### PUT /:teacherId/studentDetails/update/:studentId
-- FOR UPDATING THE STUDENT DATA
--  Performed Authentication and Authorization
-
-
-### DELETE /:teacherId/studentDetails/delete/:studentId
-- TO DELETE STUDENT 
-- Used isDeleted Key to retain data rather erasing it 
-
-
-
-### GET /:teacherId/studentDetails/get
-- To GET LIST OF ALL STUDENT 
-- Also Search By Student Name
-
-
-## assumptions
-
-
-## Admin API 
-- has access to add crop ,property
-
-
-## User API
-- it has access to get all the data 
-- select the crops according to their choice
-- can update field history 
-
-
-
-1.region
-2.property
-3.fields
+Goal
+Need to develop an app that offers common functionality for digital agriculture apps (such as OAuth-based Single Sign-On, properties, seasons, field records, etc). The API is built on HTTP and is mostly RESTful: It has predictable resource URLs, returns HTTP response codes to indicate errors. It also accepts and returns JSON in the HTTP body.
+Functional Overview
+General Concepts
+Organization
+An Organization is a master entity that has a set of properties. This entity groups and controls all the resources involved in the culture, for instance, different crops, seasons, etc.
+Property
+A property is the representation of a farm with a set of regions and fields. Basically, an organization can have multiple properties.
+Region
+The platform has a system of hierarchical representation of geographical structures, composed of Fields and Regions. A region may contain fields or other regions. Regions work like trees: a region can be a root or a node - when it contains other child regions - or a leaf - when it is an actual field, defined by a specific geometry.
+Field
+A field is a specialization of a region. Fields are specifically identified as the leaf of the region tree. It is specifically the only entity which has an actual polygon that describes its size and position in the world.
+Crop Cycle
+What is a Crop Cycle?
+The Crop Cycle is a generical entity responsible for grouping a list of fields with a crop assigned over time.
+Crop Cycle Property
+Crop Cycle Property is the association of a Crop Cycle to a property (or part of its fields). This way a property can have different cycles running at the same time, depending on the type of crops that are cultivated in this property.
+Crop Cycle Field
+Crop Cycle Field is a cycle defined to a field of a property. This way the property can have multiple cycles assigned depending on how many fields with different crops it has.
+Crop
+A crop is something that can be grown and harvested extensively for profit or subsistence. E.g: Soybean, Cotton, Coffee.
+Expectations
+- Clean maintainable code
+- Unit tests (TDD would be ideal)
+- Suitable data modelling
+- OAuth implementation
+- Working solution – if possible do send us the postman collection.
+Good To Have
+- Optimizations and scalable design at the API and DB level
